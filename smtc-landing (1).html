@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMTC Trading Pvt Ltd — Powering Global Agri Trade</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green-50:#ecfdf5;--green-100:#d1fae5;--green-200:#a7f3d0;--green-300:#6ee7b7;
+  --green-400:#34d399;--green-500:#10b981;--green-600:#059669;--green-700:#047857;
+  --blue-50:#eff6ff;--blue-100:#dbeafe;--blue-400:#60a5fa;--blue-500:#3b82f6;
+  --blue-600:#2563eb;--blue-700:#1d4ed8;
+  --slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--slate-300:#cbd5e1;
+  --slate-400:#94a3b8;--slate-500:#64748b;--slate-600:#475569;--slate-700:#334155;
+  --slate-800:#1e293b;--slate-900:#0f172a;--slate-950:#020617;
+  --bg:#fafdf8;--surface:#ffffff;--glow-green:rgba(16,185,129,.35);--glow-blue:rgba(59,130,246,.3);
+  --radius:16px;--radius-sm:10px;--radius-lg:24px;
+  --font-display:'Syne',sans-serif;--font-body:'Outfit',sans-serif;
+  --grain:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--font-body);background:var(--bg);color:var(--slate-800);line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:var(--grain);pointer-events:none;z-index:9999;opacity:.5}
+
+/* ===== UTILITY ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:50px;font-family:var(--font-body);font-weight:600;font-size:.95rem;cursor:pointer;transition:all .35s cubic-bezier(.4,0,.2,1);border:none;text-decoration:none;position:relative;overflow:hidden}
+.btn-primary{background:linear-gradient(135deg,var(--green-500),var(--green-600));color:#fff;box-shadow:0 4px 20px var(--glow-green)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--glow-green),0 0 60px rgba(16,185,129,.15)}
+.btn-secondary{background:var(--surface);color:var(--slate-800);border:1.5px solid var(--slate-200);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.btn-secondary:hover{border-color:var(--green-300);box-shadow:0 4px 20px rgba(16,185,129,.1);transform:translateY(-2px)}
+.section-label{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:50px;background:linear-gradient(135deg,var(--green-50),var(--blue-50));border:1px solid var(--green-200);font-size:.8rem;font-weight:600;color:var(--green-700);letter-spacing:.04em;text-transform:uppercase;margin-bottom:16px}
+.section-title{font-family:var(--font-display);font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;line-height:1.15;color:var(--slate-900);margin-bottom:16px}
+.section-subtitle{font-size:1.1rem;color:var(--slate-500);max-width:560px;line-height:1.7}
+
+/* ===== ANIMATIONS ===== */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes pulse-glow{0%,100%{opacity:.3}50%{opacity:.7}}
+@keyframes grain-shift{0%{transform:translate(0)}100%{transform:translate(-150px,150px)}}
+@keyframes slide-up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes gradient-x{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes rotate-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes scale-in{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.4,0,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all .4s ease}
+nav.scrolled{background:rgba(250,253,248,.85);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid rgba(0,0,0,.05);padding:12px 0}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--green-500),var(--blue-500));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;color:#fff;font-size:1.1rem;box-shadow:0 4px 16px var(--glow-green)}
+.logo-text{font-family:var(--font-display);font-weight:700;font-size:1.2rem;color:var(--slate-900)}
+.logo-text span{color:var(--green-600)}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{text-decoration:none;color:var(--slate-600);font-weight:500;font-size:.9rem;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--green-500);transition:width .3s}
+.nav-links a:hover{color:var(--green-600)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:10px 24px;font-size:.85rem}
+.mobile-menu{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.mobile-menu svg{stroke:var(--slate-700);width:24px;height:24px}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 0 80px}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-bg::before{content:'';position:absolute;top:-30%;right:-20%;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.08),transparent 70%);animation:pulse-glow 6s ease-in-out infinite}
+.hero-bg::after{content:'';position:absolute;bottom:-20%;left:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.06),transparent 70%);animation:pulse-glow 8s ease-in-out infinite 2s}
+.hero-grid-line{position:absolute;background:linear-gradient(180deg,transparent,var(--green-200),transparent);width:1px;height:200%;top:-50%;opacity:.2}
+.hero-grid-line:nth-child(1){left:20%}
+.hero-grid-line:nth-child(2){left:40%}
+.hero-grid-line:nth-child(3){left:60%}
+.hero-grid-line:nth-child(4){left:80%}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(60px);animation:float 8s ease-in-out infinite}
+.hero-orb-1{width:300px;height:300px;background:rgba(16,185,129,.1);top:10%;right:15%;animation-delay:-2s}
+.hero-orb-2{width:200px;height:200px;background:rgba(59,130,246,.08);bottom:20%;left:10%;animation-delay:-4s}
+.hero-orb-3{width:150px;height:150px;background:rgba(16,185,129,.06);top:40%;left:30%;animation-delay:-6s}
+
+.hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-text{animation:slide-up .8s ease-out both}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px 6px 8px;border-radius:50px;background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(59,130,246,.08));border:1px solid var(--green-200);font-size:.78rem;font-weight:600;color:var(--green-700);margin-bottom:24px}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green-500);box-shadow:0 0 12px var(--glow-green);animation:pulse-glow 2s infinite}
+.hero h1{font-family:var(--font-display);font-size:clamp(2.8rem,5.5vw,4.5rem);font-weight:900;line-height:1.05;margin-bottom:20px;color:var(--slate-950)}
+.hero h1 .highlight{background:linear-gradient(135deg,var(--green-500),var(--blue-500));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.15rem;color:var(--slate-500);line-height:1.7;max-width:480px;margin-bottom:32px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.hero-visual{position:relative;animation:scale-in .8s ease-out .2s both}
+.hero-card{background:rgba(255,255,255,.75);backdrop-filter:blur(20px);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,.8);box-shadow:0 20px 60px rgba(0,0,0,.06),0 0 0 1px rgba(16,185,129,.06);padding:28px;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green-400),var(--blue-400),var(--green-400));background-size:200%;animation:gradient-x 4s linear infinite}
+.hero-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.hero-card-title{font-family:var(--font-display);font-weight:700;font-size:1rem;color:var(--slate-800)}
+.hero-card-badge{padding:4px 12px;border-radius:50px;background:var(--green-50);color:var(--green-600);font-size:.75rem;font-weight:600;border:1px solid var(--green-100)}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.hero-stat{padding:16px;border-radius:var(--radius-sm);background:var(--slate-50);border:1px solid var(--slate-100)}
+.hero-stat-value{font-family:var(--font-display);font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--green-600),var(--blue-600));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-stat-label{font-size:.78rem;color:var(--slate-400);margin-top:2px}
+.hero-chart{display:flex;align-items:flex-end;gap:6px;height:60px;padding:12px 0}
+.hero-chart-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--green-400),var(--green-500));transition:height .6s cubic-bezier(.4,0,.2,1);position:relative}
+.hero-chart-bar:nth-child(even){background:linear-gradient(180deg,var(--blue-400),var(--blue-500))}
+
+.hero-floating{position:absolute;z-index:1}
+.hero-float-1{top:-20px;right:-30px;width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--green-100),var(--green-200));border:1px solid var(--green-200);display:flex;align-items:center;justify-content:center;font-size:2rem;animation:float 6s ease-in-out infinite;box-shadow:0 8px 24px rgba(16,185,129,.12)}
+.hero-float-2{bottom:40px;left:-40px;width:70px;height:70px;border-radius:18px;background:linear-gradient(135deg,var(--blue-100),var(--blue-200));border:1px solid var(--blue-200);display:flex;align-items:center;justify-content:center;font-size:1.8rem;animation:float 7s ease-in-out infinite 1s;box-shadow:0 8px 24px rgba(59,130,246,.1)}
+.hero-float-3{top:50%;right:-50px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(59,130,246,.1));border:1px solid rgba(16,185,129,.2);animation:float 5s ease-in-out infinite 2s}
+
+/* ===== TRUST STRIP ===== */
+.trust{padding:40px 0;position:relative}
+.trust::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,var(--slate-200),transparent)}
+.trust-inner{display:flex;align-items:center;justify-content:center;gap:60px;flex-wrap:wrap}
+.trust-stat{text-align:center;padding:20px 0}
+.trust-stat-value{font-family:var(--font-display);font-size:2.2rem;font-weight:800;color:var(--slate-900);display:flex;align-items:center;justify-content:center;gap:4px}
+.trust-stat-value .accent{color:var(--green-500)}
+.trust-stat-label{font-size:.85rem;color:var(--slate-400);margin-top:4px;font-weight:500}
+.trust-divider{width:1px;height:48px;background:linear-gradient(180deg,transparent,var(--slate-200),transparent)}
+
+/* ===== CATEGORIES ===== */
+.categories{padding:100px 0;position:relative}
+.categories-header{text-align:center;margin-bottom:60px}
+.categories-header .section-subtitle{margin:0 auto}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.cat-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;aspect-ratio:3/4;transition:all .5s cubic-bezier(.4,0,.2,1);group:hover}
+.cat-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 24px 60px rgba(0,0,0,.12),0 0 40px var(--glow-green)}
+.cat-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.cat-card:hover .cat-card-img{transform:scale(1.08)}
+.cat-card-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(15,23,42,.85));z-index:1;transition:all .4s}
+.cat-card:hover .cat-card-overlay{background:linear-gradient(180deg,transparent 20%,rgba(15,23,42,.9))}
+.cat-card-content{position:absolute;bottom:0;left:0;right:0;padding:28px;z-index:2;transform:translateY(10px);transition:transform .4s}
+.cat-card:hover .cat-card-content{transform:translateY(0)}
+.cat-card-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.4rem;border:1px solid rgba(255,255,255,.1);transition:all .4s}
+.cat-card:hover .cat-card-icon{background:rgba(16,185,129,.3);border-color:rgba(16,185,129,.4);box-shadow:0 0 20px rgba(16,185,129,.2)}
+.cat-card h3{font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:6px}
+.cat-card p{font-size:.85rem;color:rgba(255,255,255,.6);opacity:0;transform:translateY(8px);transition:all .4s .1s}
+.cat-card:hover p{opacity:1;transform:translateY(0)}
+.cat-card-glow{position:absolute;top:-1px;left:-1px;right:-1px;bottom:-1px;border-radius:var(--radius-lg);background:linear-gradient(135deg,var(--green-400),var(--blue-400),var(--green-400));opacity:0;z-index:-1;transition:opacity .4s;background-size:200%;animation:gradient-x 3s linear infinite}
+.cat-card:hover .cat-card-glow{opacity:1}
+
+/* ===== PRODUCTS ===== */
+.products{padding:100px 0;background:linear-gradient(180deg,var(--bg),var(--slate-50),var(--bg));position:relative}
+.products-header{text-align:center;margin-bottom:60px}
+.products-header .section-subtitle{margin:0 auto}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.product-card{background:var(--surface);border:1px solid var(--slate-100);border-radius:var(--radius);padding:0;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1);cursor:pointer;position:relative}
+.product-card::before{content:'';position:absolute;inset:-1px;border-radius:var(--radius);background:linear-gradient(135deg,var(--green-300),var(--blue-300));opacity:0;transition:opacity .4s;z-index:0}
+.product-card:hover::before{opacity:1}
+.product-card-inner{position:relative;z-index:1;background:var(--surface);border-radius:calc(var(--radius) - 1px);overflow:hidden}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+.product-card-img{width:100%;height:200px;object-fit:cover;transition:transform .5s}
+.product-card:hover .product-card-img{transform:scale(1.05)}
+.product-card-body{padding:20px}
+.product-card-cat{font-size:.72rem;font-weight:600;color:var(--green-600);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.product-card h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:6px;color:var(--slate-800)}
+.product-card p{font-size:.85rem;color:var(--slate-400);line-height:1.5}
+.product-card-footer{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--slate-50)}
+.product-tag{padding:4px 10px;border-radius:50px;background:var(--green-50);color:var(--green-600);font-size:.72rem;font-weight:600;border:1px solid var(--green-100)}
+.product-arrow{width:32px;height:32px;border-radius:50%;background:var(--slate-50);display:flex;align-items:center;justify-content:center;transition:all .3s}
+.product-card:hover .product-arrow{background:var(--green-500);color:#fff;box-shadow:0 4px 12px var(--glow-green)}
+
+/* ===== ABOUT ===== */
+.about{padding:100px 0}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-visual{position:relative}
+.about-img-main{width:100%;border-radius:var(--radius-lg);box-shadow:0 20px 60px rgba(0,0,0,.08);aspect-ratio:4/3;object-fit:cover}
+.about-img-float{position:absolute;bottom:-30px;right:-30px;width:200px;border-radius:var(--radius);box-shadow:0 12px 40px rgba(0,0,0,.1);border:4px solid var(--surface);aspect-ratio:1;object-fit:cover}
+.about-stats-float{position:absolute;top:-20px;left:-20px;background:var(--surface);backdrop-filter:blur(12px);border-radius:var(--radius);padding:18px 24px;box-shadow:0 8px 32px rgba(0,0,0,.08);border:1px solid var(--slate-100)}
+.about-stats-float .val{font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--green-600)}
+.about-stats-float .lbl{font-size:.78rem;color:var(--slate-400)}
+.about-text .section-title{margin-bottom:20px}
+.about-text p{color:var(--slate-500);margin-bottom:16px;line-height:1.8}
+.about-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:28px 0}
+.about-feature{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);background:var(--slate-50);border:1px solid var(--slate-100)}
+.about-feature-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--green-100),var(--green-50));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.about-feature span{font-size:.85rem;font-weight:500;color:var(--slate-700)}
+
+/* ===== WHY US ===== */
+.why{padding:100px 0;background:var(--slate-50);position:relative;overflow:hidden}
+.why::before{content:'';position:absolute;top:50%;left:50%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.05),transparent);transform:translate(-50%,-50%)}
+.why-header{text-align:center;margin-bottom:60px}
+.why-header .section-subtitle{margin:0 auto}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.why-card{background:var(--surface);border:1px solid var(--slate-100);border-radius:var(--radius);padding:32px 24px;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.why-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green-400),var(--blue-400));transform:scaleX(0);transition:transform .4s}
+.why-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+.why-card:hover::after{transform:scaleX(1)}
+.why-icon{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--green-50),var(--blue-50));border:1px solid var(--green-100);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:1.5rem;transition:all .4s}
+.why-card:hover .why-icon{background:linear-gradient(135deg,var(--green-100),var(--blue-100));box-shadow:0 0 24px var(--glow-green);transform:scale(1.08)}
+.why-card h3{font-family:var(--font-display);font-weight:700;font-size:1.05rem;margin-bottom:8px;color:var(--slate-800)}
+.why-card p{font-size:.85rem;color:var(--slate-400);line-height:1.6}
+
+/* ===== CTA ===== */
+.cta-section{padding:100px 0}
+.cta-box{position:relative;border-radius:var(--radius-lg);overflow:hidden;padding:80px 60px;text-align:center;background:linear-gradient(135deg,var(--slate-900),var(--slate-800))}
+.cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(16,185,129,.15),transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(59,130,246,.1),transparent 60%)}
+.cta-box::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green-400),var(--blue-400),var(--green-400));background-size:200%;animation:gradient-x 4s linear infinite}
+.cta-glow-orb{position:absolute;border-radius:50%;filter:blur(80px)}
+.cta-glow-1{width:250px;height:250px;background:rgba(16,185,129,.12);top:-60px;left:10%}
+.cta-glow-2{width:200px;height:200px;background:rgba(59,130,246,.08);bottom:-40px;right:15%}
+.cta-box h2{font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:800;color:#fff;margin-bottom:16px;position:relative;z-index:1}
+.cta-box p{color:rgba(255,255,255,.6);font-size:1.1rem;max-width:500px;margin:0 auto 36px;position:relative;z-index:1}
+.cta-box .btn-primary{padding:16px 40px;font-size:1rem;position:relative;z-index:1}
+
+/* ===== FOOTER ===== */
+footer{padding:60px 0 30px;border-top:1px solid var(--slate-100)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:var(--slate-400);font-size:.9rem;line-height:1.7;margin-top:12px;max-width:300px}
+.footer-col h4{font-family:var(--font-display);font-weight:700;font-size:.9rem;color:var(--slate-800);margin-bottom:16px}
+.footer-col a{display:block;color:var(--slate-400);text-decoration:none;font-size:.88rem;padding:4px 0;transition:color .3s}
+.footer-col a:hover{color:var(--green-600)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:24px;border-top:1px solid var(--slate-100)}
+.footer-bottom p{font-size:.82rem;color:var(--slate-400)}
+.footer-socials{display:flex;gap:12px}
+.footer-social{width:36px;height:36px;border-radius:10px;background:var(--slate-50);border:1px solid var(--slate-100);display:flex;align-items:center;justify-content:center;transition:all .3s;cursor:pointer;color:var(--slate-400)}
+.footer-social:hover{background:var(--green-50);border-color:var(--green-200);color:var(--green-600);transform:translateY(-2px)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .hero-content{grid-template-columns:1fr;text-align:center}
+  .hero p{margin:0 auto 32px}
+  .hero-btns{justify-content:center}
+  .hero-visual{max-width:500px;margin:0 auto}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .products-grid{grid-template-columns:repeat(2,1fr)}
+  .about-grid{grid-template-columns:1fr}
+  .about-visual{max-width:500px;margin:0 auto}
+  .why-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .mobile-menu{display:block}
+  .hero h1{font-size:2.5rem}
+  .trust-inner{gap:24px}
+  .trust-divider{display:none}
+  .cat-grid{grid-template-columns:1fr}
+  .cat-card{aspect-ratio:3/2}
+  .products-grid{grid-template-columns:1fr}
+  .about-features{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .cta-box{padding:50px 24px}
+  .footer-top{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center}
+  .hero-floating{display:none}
+  .about-img-float,.about-stats-float{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">S</div>
+      <div class="logo-text">SMTC <span>Trading</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#categories">Categories</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact" class="btn btn-primary nav-cta">Get in Touch</a></li>
+    </ul>
+    <button class="mobile-menu" onclick="document.querySelector('.nav-links').classList.toggle('mobile-open')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid-line"></div>
+    <div class="hero-grid-line"></div>
+    <div class="hero-grid-line"></div>
+    <div class="hero-grid-line"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+  </div>
+  <div class="container hero-content">
+    <div class="hero-text">
+      <div class="hero-badge"><span class="dot"></span> Trusted by 500+ Businesses</div>
+      <h1>Powering<br>Global <span class="highlight">Agri Trade</span></h1>
+      <p>Connecting farmers, vendors, and retailers across India with reliable supply chains, quality products, and transparent pricing at scale.</p>
+      <div class="hero-btns">
+        <a href="#products" class="btn btn-primary">
+          Explore Products
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <span class="hero-card-title">Trade Dashboard</span>
+          <span class="hero-card-badge">Live</span>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value">2.4K</div>
+            <div class="hero-stat-label">Active Orders</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">₹18Cr</div>
+            <div class="hero-stat-label">Monthly Volume</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">98.2%</div>
+            <div class="hero-stat-label">Delivery Rate</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">12</div>
+            <div class="hero-stat-label">States Covered</div>
+          </div>
+        </div>
+        <div class="hero-chart" id="heroChart"></div>
+      </div>
+      <div class="hero-floating hero-float-1">🌾</div>
+      <div class="hero-floating hero-float-2">📦</div>
+      <div class="hero-floating hero-float-3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust reveal">
+  <div class="container trust-inner">
+    <div class="trust-stat">
+      <div class="trust-stat-value">500<span class="accent">+</span></div>
+      <div class="trust-stat-label">Verified Vendors</div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-stat">
+      <div class="trust-stat-value">1,000<span class="accent">+</span></div>
+      <div class="trust-stat-label">Retail Partners</div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-stat">
+      <div class="trust-stat-value">Pan-India</div>
+      <div class="trust-stat-label">Supply Network</div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-stat">
+      <div class="trust-stat-value">50K<span class="accent">+</span></div>
+      <div class="trust-stat-label">Tonnes Traded</div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="container">
+    <div class="categories-header reveal">
+      <div class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Core Categories
+      </div>
+      <h2 class="section-title">What We Trade</h2>
+      <p class="section-subtitle">Sourcing and supplying the finest agricultural commodities across India's food supply chain.</p>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card reveal reveal-delay-1">
+        <div class="cat-card-glow"></div>
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&h=800&fit=crop" alt="Rice">
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-content">
+          <div class="cat-card-icon">🍚</div>
+          <h3>Rice</h3>
+          <p>Premium Basmati, Sona Masoori & regional varieties sourced from top paddy-growing regions.</p>
+        </div>
+      </div>
+      <div class="cat-card reveal reveal-delay-2">
+        <div class="cat-card-glow"></div>
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600&h=800&fit=crop" alt="Sugar">
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-content">
+          <div class="cat-card-icon">🧂</div>
+          <h3>Sugar</h3>
+          <p>Refined and raw sugar grades for industrial, wholesale and retail distribution.</p>
+        </div>
+      </div>
+      <div class="cat-card reveal reveal-delay-3">
+        <div class="cat-card-glow"></div>
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1612257416648-ee7a6c5b17eb?w=600&h=800&fit=crop" alt="Dal">
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-content">
+          <div class="cat-card-icon">🫘</div>
+          <h3>Dal</h3>
+          <p>Toor, Chana, Moong & Masoor dal — cleaned, graded, and bulk-ready for supply.</p>
+        </div>
+      </div>
+      <div class="cat-card reveal reveal-delay-4">
+        <div class="cat-card-glow"></div>
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=600&h=800&fit=crop" alt="Maize">
+        <div class="cat-card-overlay"></div>
+        <div class="cat-card-content">
+          <div class="cat-card-icon">🌽</div>
+          <h3>Maize</h3>
+          <p>Yellow maize for feed, starch production, and food processing industries.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="products-header reveal">
+      <div class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        Featured Products
+      </div>
+      <h2 class="section-title">Popular Commodities</h2>
+      <p class="section-subtitle">Hand-picked selections from our most traded and in-demand product lines.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-card-inner">
+          <img class="product-card-img" src="https://images.unsplash.com/photo-1536304993881-460e47931902?w=600&h=400&fit=crop" alt="Basmati Rice">
+          <div class="product-card-body">
+            <div class="product-card-cat">Rice</div>
+            <h3>Basmati Rice</h3>
+            <p>Long-grain aromatic Basmati, aged and premium-quality for export and domestic markets.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-tag">Premium Grade</span>
+            <span class="product-arrow">→</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-card-inner">
+          <img class="product-card-img" src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&h=400&fit=crop" alt="Sona Masoori">
+          <div class="product-card-body">
+            <div class="product-card-cat">Rice</div>
+            <h3>Sona Masoori</h3>
+            <p>Lightweight, aromatic medium-grain rice — the preferred choice for South Indian markets.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-tag">Best Seller</span>
+            <span class="product-arrow">→</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-card-inner">
+          <img class="product-card-img" src="https://images.unsplash.com/photo-1612257416648-ee7a6c5b17eb?w=600&h=400&fit=crop" alt="Toor Dal">
+          <div class="product-card-body">
+            <div class="product-card-cat">Dal</div>
+            <h3>Toor Dal</h3>
+            <p>Polished and unpolished Toor dal varieties, sourced directly from processing mills.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-tag">Bulk Ready</span>
+            <span class="product-arrow">→</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-card-inner">
+          <img class="product-card-img" src="https://images.unsplash.com/photo-1599639957043-f3aa5c986398?w=600&h=400&fit=crop" alt="Chana Dal">
+          <div class="product-card-body">
+            <div class="product-card-cat">Dal</div>
+            <h3>Chana Dal</h3>
+            <p>High-protein split chickpeas, cleaned and graded for wholesale distribution.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-tag">High Demand</span>
+            <span class="product-arrow">→</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-card-inner">
+          <img class="product-card-img" src="https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600&h=400&fit=crop" alt="Refined Sugar">
+          <div class="product-card-body">
+            <div class="product-card-cat">Sugar</div>
+            <h3>Refined Sugar</h3>
+            <p>S-30 and M-30 grade refined sugar from top sugar mills across Maharashtra and UP.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-tag">Industrial Grade</span>
+            <span class="product-arrow">→</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-card-inner">
+          <img class="product-card-img" src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=600&h=400&fit=crop" alt="Yellow Maize">
+          <div class="product-card-body">
+            <div class="product-card-cat">Maize</div>
+            <h3>Yellow Maize</h3>
+            <p>Feed-grade and food-grade yellow maize for animal nutrition and starch industries.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-tag">Multi-Use</span>
+            <span class="product-arrow">→</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container about-grid">
+    <div class="about-visual reveal">
+      <img class="about-img-main" src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&h=600&fit=crop" alt="Agriculture field">
+      <img class="about-img-float" src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=400&fit=crop" alt="Warehouse">
+      <div class="about-stats-float">
+        <div class="val">10+</div>
+        <div class="lbl">Years of Experience</div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <div class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        About SMTC
+      </div>
+      <h2 class="section-title">Built on Trust,<br>Scaled with Purpose</h2>
+      <p>SMTC Trading Pvt Ltd is a leading B2B agricultural trading company connecting producers, processors, and retailers across India. We bring efficiency, transparency, and reliability to the agri-commodity supply chain.</p>
+      <p>With deep relationships across farming communities and a robust logistics network, we ensure consistent quality and timely delivery at every scale.</p>
+      <div class="about-features">
+        <div class="about-feature">
+          <div class="about-feature-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Pan-India Sourcing</span>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Quality Tested</span>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Timely Logistics</span>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Fair Pricing</span>
+        </div>
+      </div>
+      <a href="#" class="btn btn-secondary">Learn More About Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="why-header reveal">
+      <div class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Our Edge
+      </div>
+      <h2 class="section-title">Why Partner With Us</h2>
+      <p class="section-subtitle">What makes SMTC Trading the preferred choice for agri-commodity procurement.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal reveal-delay-1">
+        <div class="why-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>Reliable Supply Chain</h3>
+        <p>Robust sourcing and logistics ensure consistent availability and on-time delivery across regions.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <div class="why-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Quality Assured</h3>
+        <p>Every batch undergoes rigorous quality checks, grading, and certification before dispatch.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <div class="why-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Vendor Network</h3>
+        <p>Access to 500+ verified vendors and direct farmer partnerships for best-source procurement.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-4">
+        <div class="why-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>Transparent Pricing</h3>
+        <p>Real-time market-linked pricing with no hidden charges. Fair rates for buyers and sellers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div class="cta-glow-orb cta-glow-1"></div>
+      <div class="cta-glow-orb cta-glow-2"></div>
+      <h2>Ready to Scale Your<br>Agri Business?</h2>
+      <p>Join hundreds of businesses that trust SMTC Trading for reliable, quality commodity supply.</p>
+      <a href="mailto:info@smtctrading.com" class="btn btn-primary">
+        Contact Us Today
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-mark">S</div>
+          <div class="logo-text">SMTC <span>Trading</span></div>
+        </a>
+        <p>Powering India's agricultural supply chain with trust, quality, and scale since 2014.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <a href="#categories">Rice</a>
+        <a href="#categories">Sugar</a>
+        <a href="#categories">Dal</a>
+        <a href="#categories">Maize</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Market Rates</a>
+        <a href="#">Quality Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 SMTC Trading Pvt Ltd. All rights reserved.</p>
+      <div class="footer-socials">
+        <a class="footer-social" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="footer-social" aria-label="Twitter">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a class="footer-social" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => observer.observe(el));
+
+// Hero chart bars
+const chartData = [30, 55, 40, 70, 50, 85, 60, 90, 75, 95, 65, 80];
+const chart = document.getElementById('heroChart');
+chartData.forEach((v, i) => {
+  const bar = document.createElement('div');
+  bar.className = 'hero-chart-bar';
+  bar.style.height = '0%';
+  chart.appendChild(bar);
+  setTimeout(() => { bar.style.height = v + '%'; }, 300 + i * 80);
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+// Tilt effect on category cards
+document.querySelectorAll('.cat-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `translateY(-6px) scale(1.02) perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+</script>
+</body>
+</html>
