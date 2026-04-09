@@ -55,7 +55,7 @@ export default function ContactPage() {
                 ),
                 label: "Headquarters",
                 value: "NRI INFRA GROUP, #102_First Floor Brigade IRV center, Nallurhalli Road, Nallurhalli, Whitefield Bangalore-560066",
-                href: "https://maps.google.com/?q=Brigade+IRV+center+Whitefield+Bangalore",
+                href: "https://www.google.com/maps/dir//Brigade+IRV+Centre,+Nallurhalli+Rd,+Nallurhalli,+Whitefield,+Bengaluru,+Karnataka+560066/@12.9466368,77.676544,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3bae13e3251958e9:0xf29e3f66c54fed82!2m2!1d77.7306452!2d12.9706806",
               },
               {
                 icon: (
