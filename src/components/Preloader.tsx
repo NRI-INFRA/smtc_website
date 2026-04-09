@@ -37,6 +37,17 @@ export default function Preloader() {
     return () => clearTimeout(t);
   }, [phase]);
 
+  useEffect(() => {
+    if (phase !== "done") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [phase]);
+
   if (phase === "done") return null;
 
   return (
