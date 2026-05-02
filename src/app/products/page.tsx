@@ -28,9 +28,21 @@ const products = [
   { cat: "Oil Seeds", title: "Groundnut Kernels",   desc: "Machine-cleaned groundnuts kernels for crushing, snacking and export.",                           tag: "Multi-Use",        img: "/images/oil-seeds.png", featured: false },
   { cat: "Oil Seeds", title: "Mustard Seeds",       desc: "High oil-content mustard seeds sourced from the heart of Rajasthan.",                            tag: "High Yield",       img: "/images/oil-seeds.png", featured: true },
   { cat: "Oil Seeds", title: "Soybean",             desc: "Graded soybeans for oil extraction and food processing units.",                                  tag: "Wholesale",        img: "/images/oil-seeds.png", featured: false },
+
+  { cat: "Iron",      title: "Pig Iron",            desc: "High-grade pig iron sourced from leading blast furnaces for foundry and steelmaking applications.", tag: "Foundry Grade",    img: "/images/iron.png", featured: true },
+  { cat: "Iron",      title: "Sponge Iron (DRI)",   desc: "Direct reduced iron for electric arc furnaces and secondary steelmaking.",                        tag: "Industrial",       img: "/images/iron.png", featured: false },
+  { cat: "Iron",      title: "Cast Iron",           desc: "Grey and ductile cast iron for heavy engineering and automotive components.",                     tag: "Premium Grade",    img: "/images/iron.png", featured: false },
+
+  { cat: "Iron Ore",  title: "Hematite Ore",        desc: "High Fe-content hematite iron ore fines and lumps from major mining belts.",                      tag: "High Fe",          img: "/images/iron-ore.png", featured: true },
+  { cat: "Iron Ore",  title: "Magnetite Ore",       desc: "Premium magnetite ore for pelletization and beneficiation plants.",                               tag: "Beneficiation",    img: "/images/iron-ore.png", featured: false },
+  { cat: "Iron Ore",  title: "Iron Ore Fines",      desc: "Calibrated iron ore fines for sintering and pellet production.",                                  tag: "Bulk Supply",      img: "/images/iron-ore.png", featured: false },
+
+  { cat: "Metal Pellets", title: "Iron Ore Pellets",  desc: "Blast furnace and DR grade iron ore pellets with consistent Fe content.",                       tag: "Steel Grade",      img: "/images/metal-pellets.png", featured: true },
+  { cat: "Metal Pellets", title: "DRI Pellets",       desc: "Direct reduction grade pellets optimized for sponge iron production.",                          tag: "DR Grade",         img: "/images/metal-pellets.png", featured: false },
+  { cat: "Metal Pellets", title: "Ferro Alloy Pellets", desc: "Specialized ferro alloy pellets for alloy steel manufacturing.",                              tag: "Specialty",        img: "/images/metal-pellets.png", featured: false },
 ];
 
-const cats = ["All", "Rice", "Dal", "Sugar", "Maize", "Wheat", "Oil Seeds"];
+const cats = ["All", "Rice", "Dal", "Sugar", "Maize", "Wheat", "Oil Seeds", "Iron", "Iron Ore", "Metal Pellets"];
 const featured = products.filter((p) => p.featured);
 
 export default function ProductsPage() {

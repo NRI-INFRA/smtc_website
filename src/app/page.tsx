@@ -23,7 +23,7 @@ export default function Home() {
         {/* Left-aligned content */}
         <div className="container hero-v2-content">
           <div className="hero-v2-inner">
-            <p className="hero-v2-eyebrow">India&apos;s Premier Agri-Commodity Trader</p>
+            <p className="hero-v2-eyebrow">India&apos;s Premier Commodity Trader</p>
 
             <h1 className="hero-v2-heading">
               From Farm<br />
@@ -33,7 +33,7 @@ export default function Home() {
 
             <p className="hero-v2-sub">
               SMTC Trading connects 500+ verified vendors with buyers across India —
-              supplying rice, sugar, dal, maize and more with guaranteed quality and on-time delivery.
+              supplying rice, sugar, dal, maize, iron, metal pellets and more with guaranteed quality and on-time delivery.
             </p>
 
             <div className="hero-v2-actions">
@@ -81,7 +81,7 @@ export default function Home() {
         <DicedHeroSection
           topText="Core Categories"
           mainText="What We Trade"
-          subMainText="Sourcing and supplying the finest agricultural commodities across India's food supply chain — from paddy fields to processing mills."
+          subMainText="Sourcing and supplying the finest agricultural and industrial commodities across India — from paddy fields to steel mills."
           buttonText="View All Categories"
           onMainButtonClick={() => { window.location.href = "/categories"; }}
           separatorColor="var(--brand-500)"
@@ -110,6 +110,9 @@ export default function Home() {
             { title: "Sugar", image: "/images/sugar.png" },
             { title: "Dal",   image: "/images/dal.png" },
             { title: "Maize", image: "/images/maize.png" },
+            { title: "Iron",  image: "/images/iron.png" },
+            { title: "Iron Ore", image: "/images/iron-ore.png" },
+            { title: "Metal Pellets", image: "/images/metal-pellets.png" },
           ]}
         />
       </section>
@@ -130,6 +133,9 @@ export default function Home() {
               { delay: "reveal-delay-1", src: "/images/dal.png", alt: "Chana Dal", cat: "Dal", title: "Chana Dal", desc: "High-protein split chickpeas, cleaned and graded for wholesale distribution.", tag: "High Demand" },
               { delay: "reveal-delay-2", src: "/images/sugar.png", alt: "Refined Sugar", cat: "Sugar", title: "Refined Sugar", desc: "S-30 and M-30 grade refined sugar from top sugar mills across Maharashtra and UP.", tag: "Industrial Grade" },
               { delay: "reveal-delay-3", src: "/images/maize.png", alt: "Yellow Maize", cat: "Maize", title: "Yellow Maize", desc: "Feed-grade and food-grade yellow maize for animal nutrition and starch industries.", tag: "Multi-Use" },
+              { delay: "reveal-delay-1", src: "/images/iron.png", alt: "Pig Iron", cat: "Iron", title: "Pig Iron", desc: "High-grade pig iron sourced from leading blast furnaces for foundry and steelmaking.", tag: "Foundry Grade" },
+              { delay: "reveal-delay-2", src: "/images/iron-ore.png", alt: "Hematite Ore", cat: "Iron Ore", title: "Hematite Ore", desc: "High Fe-content hematite iron ore fines and lumps from major mining belts.", tag: "High Fe" },
+              { delay: "reveal-delay-3", src: "/images/metal-pellets.png", alt: "Iron Ore Pellets", cat: "Metal Pellets", title: "Iron Ore Pellets", desc: "Blast furnace and DR grade iron ore pellets with consistent Fe content.", tag: "Steel Grade" },
             ].map((p) => (
               <div key={p.title} className={`product-card reveal ${p.delay}`}>
                 <div className="product-card-inner">
@@ -168,9 +174,9 @@ export default function Home() {
             <div className="section-label">About SMTC</div>
             <h2 className="section-title">Built on Trust,<br />Scaled with Purpose</h2>
             <p>
-              SMTC Trading Pvt Ltd is a leading B2B agricultural trading company connecting producers,
+              SMTC Trading Pvt Ltd is a leading B2B commodity trading company connecting producers,
               processors, and retailers across India. We bring efficiency, transparency, and reliability
-              to the agri-commodity supply chain.
+              to the agricultural and industrial commodity supply chain.
             </p>
             <p>
               With deep relationships across farming communities and a robust logistics network, we ensure

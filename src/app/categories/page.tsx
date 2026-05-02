@@ -52,6 +52,30 @@ const categories = [
     img: "/images/oil-seeds.png",
     highlight: "Export Ready",
   },
+  {
+    icon: "🔩",
+    title: "Iron",
+    desc: "High-quality pig iron, sponge iron and cast iron sourced from leading furnaces and mills across India.",
+    varieties: ["Pig Iron", "Sponge Iron", "Cast Iron", "Wrought Iron", "TMT Bars"],
+    img: "/images/iron.png",
+    highlight: "Industrial Grade",
+  },
+  {
+    icon: "⛏️",
+    title: "Iron Ore",
+    desc: "Premium hematite and magnetite iron ore — fines, lumps and calibrated grades from major mining regions.",
+    varieties: ["Hematite Ore", "Magnetite Ore", "Iron Ore Fines", "Iron Ore Lumps", "Pellet Feed"],
+    img: "/images/iron-ore.png",
+    highlight: "High Fe Content",
+  },
+  {
+    icon: "⚙️",
+    title: "Metal Pellets",
+    desc: "Blast furnace and DR grade iron ore pellets and ferro alloy pellets for steel manufacturing.",
+    varieties: ["Iron Ore Pellets", "DRI Pellets", "Ferro Alloy Pellets", "BF Grade", "DR Grade"],
+    img: "/images/metal-pellets.png",
+    highlight: "Steel Grade",
+  },
 ];
 
 export default function CategoriesPage() {
@@ -60,7 +84,7 @@ export default function CategoriesPage() {
       <PageHero
         label="What We Trade"
         title="Our Commodity Categories"
-        subtitle="A comprehensive range of agricultural commodities sourced from India's finest growing regions and processing mills."
+        subtitle="A comprehensive range of agricultural and industrial commodities sourced from India's finest growing regions, processing mills, and mining belts."
       />
 
       {/* Featured carousel */}
