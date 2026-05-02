@@ -99,9 +99,9 @@ export default function CategoriesPage() {
               {categories.map((cat) => (
                 <div
                   key={cat.title}
+                  className="cat-carousel-slide"
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
                     gap: 0,
                     borderRadius: "var(--radius-lg)",
                     overflow: "hidden",

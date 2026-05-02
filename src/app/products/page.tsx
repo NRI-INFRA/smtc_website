@@ -98,7 +98,7 @@ export default function ProductsPage() {
           </div>
 
           {/* Filter chips */}
-          <div className="reveal" style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "40px" }}>
+          <div className="product-filters reveal" style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "40px" }}>
             {cats.map((c) => (
               <button
                 key={c}

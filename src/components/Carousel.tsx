@@ -17,7 +17,27 @@ export default function Carousel({
   itemsPerView = 1,
 }: CarouselProps) {
   const [current, setCurrent] = useState(0);
-  const total = Math.ceil(children.length / itemsPerView);
+
+  // Responsive: reduce itemsPerView on smaller screens
+  const [responsiveIPV, setResponsiveIPV] = useState(itemsPerView);
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      if (w <= 640) setResponsiveIPV(1);
+      else if (w <= 1024) setResponsiveIPV(Math.min(itemsPerView, 2));
+      else setResponsiveIPV(itemsPerView);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [itemsPerView]);
+
+  const effectiveIPV = responsiveIPV;
+  const total = Math.ceil(children.length / effectiveIPV);
+
+  // Reset slide index when layout changes
+  useEffect(() => { setCurrent(0); }, [effectiveIPV]);
+
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const prev = useCallback(() => setCurrent((c) => (c - 1 + total) % total), [total]);
@@ -35,8 +55,8 @@ export default function Carousel({
 
   // Chunk children into pages
   const pages: React.ReactNode[][] = [];
-  for (let i = 0; i < children.length; i += itemsPerView) {
-    pages.push(children.slice(i, i + itemsPerView));
+  for (let i = 0; i < children.length; i += effectiveIPV) {
+    pages.push(children.slice(i, i + effectiveIPV));
   }
 
   return (
@@ -51,7 +71,7 @@ export default function Carousel({
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: `repeat(${itemsPerView}, 1fr)`,
+                  gridTemplateColumns: `repeat(${effectiveIPV}, 1fr)`,
                   gap: "24px",
                 }}
               >
