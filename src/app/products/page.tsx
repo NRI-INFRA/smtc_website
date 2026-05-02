@@ -66,7 +66,7 @@ export default function ProductsPage() {
             <p className="section-subtitle">Our most in-demand products — always in stock, quality assured.</p>
           </div>
           <div className="reveal">
-            <Carousel autoplay interval={5500} itemsPerView={3}>
+            <Carousel autoplay interval={3000} itemsPerView={3}>
               {featured.map((p) => (
                 <div key={p.title} className="product-card" style={{ display: "flex", flexDirection: "column" }}>
                   <div className="product-card-inner" style={{ height: "100%", display: "flex", flexDirection: "column" }}>

@@ -95,7 +95,7 @@ export default function CategoriesPage() {
             <h2 className="section-title">What We Source &amp; Supply</h2>
           </div>
           <div className="reveal">
-            <Carousel autoplay interval={5000}>
+            <Carousel autoplay interval={3000}>
               {categories.map((cat) => (
                 <div
                   key={cat.title}

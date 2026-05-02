@@ -16,7 +16,9 @@ export default function Carousel({
   interval = 5000,
   itemsPerView = 1,
 }: CarouselProps) {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(1); // Start at 1 because of clone
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [useTransition, setUseTransition] = useState(true);
 
   // Responsive: reduce itemsPerView on smaller screens
   const [responsiveIPV, setResponsiveIPV] = useState(itemsPerView);
@@ -33,40 +35,83 @@ export default function Carousel({
   }, [itemsPerView]);
 
   const effectiveIPV = responsiveIPV;
-  const total = Math.ceil(children.length / effectiveIPV);
-
-  // Reset slide index when layout changes
-  useEffect(() => { setCurrent(0); }, [effectiveIPV]);
-
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + total) % total), [total]);
-  const next = useCallback(() => setCurrent((c) => (c + 1) % total), [total]);
-
-  useEffect(() => {
-    if (!autoplay) return;
-    timerRef.current = setInterval(next, interval);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [autoplay, interval, next]);
-
-  const stopAutoplay = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-  };
-
+  
   // Chunk children into pages
   const pages: React.ReactNode[][] = [];
   for (let i = 0; i < children.length; i += effectiveIPV) {
     pages.push(children.slice(i, i + effectiveIPV));
   }
+  
+  const total = pages.length;
+  const slides = [pages[total - 1], ...pages, pages[0]]; // Add clones
+
+  // Reset slide index when layout changes
+  useEffect(() => { setCurrent(1); }, [effectiveIPV]);
+
+  const prev = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setUseTransition(true);
+    setCurrent((c) => c - 1);
+  }, [isTransitioning]);
+
+  const next = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setUseTransition(true);
+    setCurrent((c) => c + 1);
+  }, [isTransitioning]);
+
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startAutoplay = useCallback(() => {
+    if (!autoplay || total <= 1) return;
+    stopAutoplay();
+    timerRef.current = setInterval(next, interval);
+  }, [autoplay, interval, next, total]);
+
+  const stopAutoplay = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    startAutoplay();
+    return () => stopAutoplay();
+  }, [startAutoplay, stopAutoplay]);
+
+  const handleTransitionEnd = () => {
+    setIsTransitioning(false);
+    if (current === 0) {
+      setUseTransition(false);
+      setCurrent(total);
+    } else if (current === total + 1) {
+      setUseTransition(false);
+      setCurrent(1);
+    }
+  };
+
+  const goToPage = (index: number) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setUseTransition(true);
+    setCurrent(index + 1);
+  };
 
   return (
-    <div onMouseEnter={stopAutoplay}>
+    <div onMouseEnter={stopAutoplay} onMouseLeave={startAutoplay}>
       <div className="carousel">
         <div
           className="carousel-track"
-          style={{ transform: `translateX(-${current * 100}%)` }}
+          onTransitionEnd={handleTransitionEnd}
+          style={{ 
+            transform: `translateX(-${current * 100}%)`,
+            transition: useTransition ? "transform .5s cubic-bezier(.4,0,.2,1)" : "none"
+          }}
         >
-          {pages.map((page, i) => (
+          {slides.map((page, i) => (
             <div key={i} className="carousel-slide">
               <div
                 style={{
@@ -91,8 +136,8 @@ export default function Carousel({
             {Array.from({ length: total }).map((_, i) => (
               <button
                 key={i}
-                className={`carousel-dot${i === current ? " active" : ""}`}
-                onClick={() => setCurrent(i)}
+                className={`carousel-dot${i === (current - 1 + total) % total ? " active" : ""}`}
+                onClick={() => goToPage(i)}
                 aria-label={`Go to slide ${i + 1}`}
               />
             ))}
