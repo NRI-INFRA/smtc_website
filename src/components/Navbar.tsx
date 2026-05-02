@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const nav = document.getElementById("nav");
@@ -21,10 +22,15 @@ export default function Navbar() {
     }
   }, [pathname]);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   return (
     <nav id="nav" className={pathname !== "/" ? "scrolled" : ""}>
       <div className="container nav-inner">
-        <Link href="/" className="logo">
+        <Link href="/" className="logo" onClick={() => setIsOpen(false)}>
           {/* Official Logo Image */}
           <div className="logo-img-wrapper" style={{ width: "40px", height: "40px", position: "relative" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -36,7 +42,7 @@ export default function Navbar() {
           </div>
           <div className="logo-text">SMTC <span>Trading</span></div>
         </Link>
-        <ul className="nav-links">
+        <ul className={`nav-links ${isOpen ? "mobile-open" : ""}`} onClick={() => setIsOpen(false)}>
           <li><Link href="/">Home</Link></li>
           <li><Link href="/categories">Categories</Link></li>
           <li><Link href="/products">Products</Link></li>
@@ -50,9 +56,7 @@ export default function Navbar() {
         </ul>
         <button
           className="mobile-menu"
-          onClick={() =>
-            document.querySelector(".nav-links")?.classList.toggle("mobile-open")
-          }
+          onClick={() => setIsOpen(!isOpen)}
         >
           <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round">
             <line x1="3" y1="6" x2="21" y2="6" />
